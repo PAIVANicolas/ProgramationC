@@ -1,9 +1,4 @@
-#include <stdio.h>
-#define PRINTX printf("%d\n",x)
-#define PRINT(int) printf("%d\n", int)
-#define PRINT(int) printf(#int "= %d\n", int)
-#define PRINT(int) printf(#int "= %d\n", int) 
-
+#include <stdio.h>   
 #define EXO1
 
 int main() {
@@ -91,6 +86,8 @@ int main() {
 #endif
 
 #ifdef EXO6
+#define PRINTX printf("%d\n",x)
+
    int x = 2, y, z ;
 
    x *= 3 + 2 ; PRINTX;
@@ -101,7 +98,10 @@ int main() {
 #endif
 
 #ifdef EXO7
+#define PRINT(int) printf("%d\n", int) 
+
    int x, y, z;
+
    x = 2 ; y = 1; z = 0;
    x = x && y || z;
    PRINT(x);
@@ -114,6 +114,8 @@ int main() {
 #endif
 
 #ifdef EXO8
+#define PRINT(int) printf(#int "= %d\n", int) 
+
    int x, y, z;
 
    x = 03 ; y = 02 ; z = 01 ;
@@ -131,6 +133,7 @@ int main() {
 #endif
 
 #ifdef EXO9
+#define PRINT(int) printf(#int "= %d\n", int)
 
    int x=1, y=1, z=1;
 
