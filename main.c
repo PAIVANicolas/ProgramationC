@@ -1,5 +1,5 @@
 #include <stdio.h>   
-#define EXO1
+#define EXO7
 
 int main() {
 
