@@ -3,7 +3,7 @@
 #include <string.h>
 
 #define Exo1
-#define MAX_LINE_LENGTH 256
+
 
 int main() {
 
@@ -18,7 +18,7 @@ Ré-ouvrir le fichier en mode append ‘a’.
 Ecrire une phrase.
 Contrôler le fichier en question. La phrase est-elle présente ? 
 */
-
+#define MAX_LINE_LENGTH 256
 
    FILE* file;
    char filename[MAX_LINE_LENGTH];
@@ -88,11 +88,6 @@ Contrôler le fichier en question. La phrase est-elle présente ?
    } else {
       printf("La phrase \"%s\" n'a pas été trouvée dans le fichier\n", search_phrase);
    }
-   
-
-
-
-
 
 #endif
 
