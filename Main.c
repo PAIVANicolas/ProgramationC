@@ -3,7 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 
-#define Exo2
+#define Exo4
 
 #define MAX_LINE_LENGTH 256
 
@@ -147,7 +147,53 @@ Afficher la position courante (ftell).
 Faire un retour à la position initiale.
 Afficher la position courante (ftell). Afficher le fichier.
 Ecrire une phrase. Va-t-elle écraser la phrase précédente ?
+
+Oui la phrase précédente est écrasé
 */
+
+   FILE* file;
+   char filename[] = "test.txt";
+   char text1[] = "Première phrase\n";
+   char text2[] = "Deuxième phrase\n";
+   long initial_position;
+
+   // Création du fichier en lecture/écriture
+   file = fopen(filename, "w+");
+   if (file == NULL) {
+      printf("Erreur : Impossible de créer le fichier\n");
+      exit(1);
+   }
+
+   // Ecriture de la première phrase dans le fichier
+   fputs(text1, file);
+
+   // Affichage de la position courante
+   printf("Position courante : %ld\n", ftell(file));
+
+   // Déplacement de la position courante et affichage de la nouvelle position courante
+   fseek(file, 0, SEEK_SET);
+   printf("Nouvelle position courante : %ld\n", ftell(file));
+
+   // Affichage du contenu du fichier
+   printf("Contenu du fichier :\n");
+   char c;
+   while ((c = getc(file)) != EOF) {
+      putchar(c);
+   }
+
+   // Retour à la position initiale et écriture de la deuxième phrase dans le fichier
+   fseek(file, 0, SEEK_SET);
+   fputs(text2, file);
+
+   // Affichage du contenu du fichier
+   printf("\nNouveau contenu du fichier :\n");
+   fseek(file, 0, SEEK_SET);
+   while ((c = getc(file)) != EOF) {
+      putchar(c);
+   }
+
+   // Fermeture du fichier
+   fclose(file);
 
 
 #endif
@@ -163,7 +209,74 @@ Ecrire un programme qui lit ce fichier et affiche les différentes personnes.
 Ecrire ensuite le programme qui permet d’ajouter une personne à la fin de ce fichier.
 Utiliser maintenant une structure personne et modifier le programme initial 
 */
+struct personne {
+   char nom[MAX_LINE_LENGTH];
+   char prenom[MAX_LINE_LENGTH];
+   int age;
+   char email[MAX_LINE_LENGTH];
+};
 
+
+   FILE* file;
+   char line[MAX_LINE_LENGTH];
+   char filename[MAX_LINE_LENGTH];
+   struct personne p;
+
+   // Obtention du nom de fichier en cours d'exécution
+   printf("Veuillez saisir le nom de fichier : ");
+   fgets(filename, MAX_LINE_LENGTH, stdin);
+   filename[strlen(filename) - 1] = '\0';  // Retrait du caractère de fin de ligne
+
+   // Ouverture du fichier en lecture seule
+   file = fopen(filename, "r");
+   if (file == NULL) {
+      printf("Erreur : Impossible d'ouvrir le fichier\n");
+      return 1;
+   }
+
+   // Lecture du fichier et affichage des différentes personnes
+   printf("\nListe des personnes :\n");
+   while (fgets(p.nom, MAX_LINE_LENGTH, file)) {
+      fgets(p.prenom, MAX_LINE_LENGTH, file);
+      fgets(line, MAX_LINE_LENGTH, file);
+      p.age = atoi(line);
+      fgets(p.email, MAX_LINE_LENGTH, file);
+
+      printf("Nom : %s", p.nom);
+      printf("Prenom : %s", p.prenom);
+      printf("Age : %d\n", p.age);
+      printf("Email : %s", p.email);
+      printf("\n");
+   }
+
+   // Fermeture du fichier
+   fclose(file);
+
+   // Ajout d'une personne à la fin du fichier
+   file = fopen(filename, "a");
+   if (file == NULL) {
+      printf("Erreur : Impossible d'ouvrir le fichier\n");
+      return 1;
+   }
+
+   printf("Veuillez saisir les informations de la nouvelle personne :\n");
+   printf("Nom : ");
+   fgets(p.nom, MAX_LINE_LENGTH, stdin);
+   printf("Prenom : ");
+   fgets(p.prenom, MAX_LINE_LENGTH, stdin);
+   printf("Age : ");
+   fgets(line, MAX_LINE_LENGTH, stdin);
+   p.age = atoi(line);
+   printf("Email : ");
+   fgets(p.email, MAX_LINE_LENGTH, stdin);
+
+   fprintf(file, "%s", p.nom);
+   fprintf(file, "%s", p.prenom);
+   fprintf(file, "%d\n", p.age);
+   fprintf(file, "%s", p.email);
+
+   // Fermeture du fichier
+   fclose(file);
 
 #endif
 
