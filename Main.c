@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
-#define Exo1
+#define Exo2
 
+#define MAX_LINE_LENGTH 256
 
 int main() {
-
 
 #ifdef Exo1 // Lecture puis Ecriture 
 /*
@@ -18,7 +19,6 @@ Ré-ouvrir le fichier en mode append ‘a’.
 Ecrire une phrase.
 Contrôler le fichier en question. La phrase est-elle présente ? 
 */
-#define MAX_LINE_LENGTH 256
 
    FILE* file;
    char filename[MAX_LINE_LENGTH];
@@ -98,6 +98,43 @@ afficher le fichier avant et après traitement.
 Vous utiliserez int toupper(int c) de ctype.h ou une fonction qui soustrait 32 pour un caractère minuscule
 ASCII donné.
 */
+   FILE* file;
+   char filename[MAX_LINE_LENGTH];
+   char line[MAX_LINE_LENGTH];
+   int c;
+
+   // Obtention du nom de fichier en cours d'exécution
+   printf("Veuillez saisir le nom de fichier : ");
+   fgets(filename, MAX_LINE_LENGTH, stdin);
+   filename[strcspn(filename, "\n")] = '\0';
+
+   // Ouverture du fichier en lecture/écriture
+   file = fopen(filename, "r+");
+   if (file == NULL) {
+      printf("Erreur : Impossible d'ouvrir le fichier\n");
+      return 1;
+   }
+
+   // Lecture du fichier, transformation en majuscules et écriture dans le même fichier
+   while ((c = fgetc(file)) != EOF) {
+      fseek(file, -1, SEEK_CUR);  // Retour au caractère lu pour l'écraser
+      fputc(toupper(c), file);
+   }
+
+   // Fermeture du fichier
+   fclose(file);
+
+   // Affichage du contenu du fichier après traitement
+   printf("\nContenu du fichier après traitement :\n");
+   file = fopen(filename, "r");
+   if (file == NULL) {
+      printf("Erreur : Impossible d'ouvrir le fichier\n");
+      return 1;
+   }
+   while (fgets(line, MAX_LINE_LENGTH, file)) {
+      printf("%s", line);
+   }
+   fclose(file);
 
 
 #endif
@@ -111,7 +148,6 @@ Faire un retour à la position initiale.
 Afficher la position courante (ftell). Afficher le fichier.
 Ecrire une phrase. Va-t-elle écraser la phrase précédente ?
 */
-
 
 
 #endif
