@@ -3,7 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 
-#define Exo4
+#define Exo5
 
 #define MAX_LINE_LENGTH 256
 
@@ -280,15 +280,97 @@ struct personne {
 
 #endif
 
-#ifdef Exo5 //Fichier binaire (utilisation de fwrite et fread) 
+#ifdef Exo5 // Fichier binaire (utilisation de fwrite et fread) 
 /*
-Créez un fichier qui servira à stocker les mêmes informations précédentes mais en mode binaire. Lire
-d’abord le fichier texte précédent, puis stocker dans un fichier binaire. Faire la lecture de ce fichier binaire
-et vérifier que les valeurs lues sont correctes.
-Vous pouvez commencer par sauvegarder une variable de type int dans un fichier puis la récupérer depuis
-ce fichier de sauvegarde. Essayez ensuite en utilisant une structure personne. Editer le fichier binaire
+Créez un fichier qui servira à stocker les mêmes informations précédentes mais en mode binaire. 
+Lire d’abord le fichier texte précédent, 
+puis stocker dans un fichier binaire. Faire la lecture de ce fichier binaire et 
+vérifier que les valeurs lues sont correctes.
+Vous pouvez commencer par sauvegarder une variable de type int dans un fichier 
+puis la récupérer depuis ce fichier de sauvegarde. 
+Essayez ensuite en utilisant une structure personne. Editer le fichier binaire
 produit avec un éditeur hexadécimal. 
 */
+
+
+   // Définition de la structure personne
+   struct personne {
+      char nom[50];
+      int age;
+      float taille;
+   };
+    // Ouverture du fichier texte en lecture
+    FILE* fichier_texte = fopen("fichier.txt", "r");
+    if (fichier_texte == NULL) {
+        printf("Erreur : impossible d'ouvrir le fichier texte\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Lecture du nombre de personnes dans le fichier texte
+    int nb_personnes;
+    fscanf(fichier_texte, "%d", &nb_personnes);
+
+    // Allocation dynamique du tableau de personnes
+    struct personne* personnes = malloc(nb_personnes * sizeof(struct personne));
+    if (personnes == NULL) {
+        printf("Erreur : impossible d'allouer le tableau de personnes\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Lecture des informations des personnes dans le fichier texte
+    for (int i = 0; i < nb_personnes; i++) {
+        fscanf(fichier_texte, "%s %d %f", personnes[i].nom, &personnes[i].age, &personnes[i].taille);
+    }
+
+    // Fermeture du fichier texte
+    fclose(fichier_texte);
+
+    // Ouverture du fichier binaire en écriture
+    FILE* fichier_binaire = fopen("fichierBinaire.bin", "wb");
+    if (fichier_binaire == NULL) {
+        printf("Erreur : impossible d'ouvrir le fichier binaire\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Écriture du nombre de personnes dans le fichier binaire
+    fwrite(&nb_personnes, sizeof(int), 1, fichier_binaire);
+
+    // Écriture des informations des personnes dans le fichier binaire
+    for (int i = 0; i < nb_personnes; i++) {
+        fwrite(&personnes[i], sizeof(struct personne), 1, fichier_binaire);
+    }
+
+    // Fermeture du fichier binaire
+    fclose(fichier_binaire);
+
+    // Ouverture du fichier binaire en lecture
+    fichier_binaire = fopen("fichierBinaire.bin", "rb");
+    if (fichier_binaire == NULL) {
+        printf("Erreur : impossible d'ouvrir le fichier binaire\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Lecture du nombre de personnes dans le fichier binaire
+    fread(&nb_personnes, sizeof(int), 1, fichier_binaire);
+
+    // Allocation dynamique du tableau de personnes pour la lecture
+    struct personne* personnes_lues = malloc(nb_personnes * sizeof(struct personne));
+    if (personnes_lues == NULL) {
+        printf("Erreur : impossible d'allouer le tableau de personnes lues\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Lecture des informations des personnes dans le fichier binaire
+    for (int i = 0; i < nb_personnes; i++) {
+        fread(&personnes_lues[i], sizeof(struct personne), 1, fichier_binaire);
+    }
+
+    // Fermeture du fichier binaire
+    fclose(fichier_binaire);
+
+
+
+
 
 
 #endif
